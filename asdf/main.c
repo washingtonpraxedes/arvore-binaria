@@ -11,7 +11,7 @@ typedef struct No{
 
 int main()
 {
-    printf("Hello world!\n");
+    printf("testando!\n");
     return 0;
 }
 
