@@ -6,23 +6,26 @@
 typedef struct no{
 	struct no *esq;
 	struct no *dir;
+    struct no *pai;
 	int telefone,rg;
     char *nome;
     char *email;
+
 }no;
+/*lembrar*/
 
 no *raiz = NULL;
 
 
-void inserirNo(no **raiz,int telefone, int rg, char *nome, char *email)
+void inserirNo(no **raiz,int telefoneM, int rgM, char *nomeM, char *emailM)
 {
 	if(*raiz == NULL) {
         printf("Entro no if 1 \n");
     	no *aux = (no *)malloc(sizeof(no));
-    	aux->telefone = telefone;
-    	aux->rg = rg;
-    	aux-> nome=nome;
-    	aux-> email= email;
+    	aux->telefone = telefoneM;
+    	aux->rg = rgM;
+    	aux-> nome=nomeM;
+    	aux-> email= emailM;
     	aux->dir = aux->esq = NULL;
     	*raiz = aux;
     	printf("Elemento foi inserido com sucesso.\n");
@@ -34,46 +37,74 @@ void inserirNo(no **raiz,int telefone, int rg, char *nome, char *email)
     	printf("%s\n",aux->email);
     	return;
 	}
-	if  (telefone<(*raiz)->telefone) {
+	if  (telefoneM<(*raiz)->telefone) {
         printf("Entrou no 2 if");
-    	inserirNo(&(*raiz)->esq,telefone, rg,  nome,  email);
+    	inserirNo(&(*raiz)->esq,telefoneM, rgM,  nomeM,  emailM);
     	return;
 	}
 
 
-        if( telefone>(*raiz)->telefone) {
+        if( telefoneM>(*raiz)->telefone) {
             printf("Entrou no 3 if");
-            inserirNo(&(*raiz)->dir,telefone, rg,  nome,  email);
+            inserirNo(&(*raiz)->dir,telefoneM, rgM,  nomeM,  emailM);
             return;
         }
-        printf("Telefone %d ja existe na arvore.\n",telefone);
+        printf("Telefone %d ja existe na arvore.\n",telefoneM);
 
 	}
+    int busca (no *raiz,int telefone){
+
+        if(raiz==NULL){
+            return 0;
+        }
+         if else (raiz->telefone==telefone){
+            return 1;
+        }
+         if else (raiz->telefone>telefone){
+            se(raiz->esq!=NULL){
+                busca(telefone,raiz->esq);
+            }
+            else{
+                return 2;
+            }
+
+        }
+         if else(raiz->dir!=NULL){
+            busca(telefone,raiz->dir);
+            }
+
+            else{
+
+                return 3;
+            }
 
 
 
 
-	void listar(no *raiz)
+}
+
+    void pre_ordem(no *raiz ){
+     if(raiz !=NULL){
+         visitar(raiz);
+         pre_ordem(raiz->esq);
+         pre_ordem(raiz->dir);
+     }
+
+
+    }
+
+	void visitar(no *raiz)
 {
 	if(raiz == NULL){
     	return;
     }
 
-
-        listar(raiz->esq);
         printf("Telefone :%d\n",raiz->telefone);
         printf("Nome: %s\n",raiz->nome);
         printf("RG: %d\n",raiz->rg);
         printf("Email: %s\n",raiz->email);
-
-
-     if(raiz->dir!=NULL){
-        listar(raiz->dir);
-        }
+        printf("<><><><><><><><><><><><><><>\n");
 }
-
-
-
 
 
 
@@ -109,7 +140,7 @@ while(1){
         printf("Email: ");
         char email[20];
         scanf("%s",email);
-        inserirNo(&raiz,  telefone, rg,  &nome,  &email);
+        inserirNo(&raiz,  telefone, rg,  nome,  email);
         break;
     case 2:
         printf("Digite o numero de pesquisa: ");
@@ -121,13 +152,18 @@ while(1){
     case 4:
         printf("Listando:\n");
         printf("Qual ordem vc deseja listar: \n");
-        printf("[1]-Pre-ordem");
-        printf("[2]-In-ordem");
-        printf("[3]-Pos-ordem");
+        printf("[1]-Pre-ordem\n");
+        printf("[2]-In-ordem\n");
+        printf("[3]-Pos-ordem\n");
         int op;
         scanf("%d",&op);
-        listar(&raiz);
-        break;
+        switch(op){
+            case 1:
+                printf("Listando em Pre-ordem:\n");
+                pre_ordem(&raiz);
+                break;
+        }
+
 
     }
 
