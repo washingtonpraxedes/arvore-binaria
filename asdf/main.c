@@ -52,7 +52,7 @@ void inserirNo(no **raiz,int telefoneM, int rgM, char *nomeM, char *emailM)
         printf("Telefone %d ja existe na arvore.\n",telefoneM);
 
 	}
-    
+
 int busca (no *raiz,int telefone){
 
         if(raiz==NULL){
@@ -82,9 +82,9 @@ int busca (no *raiz,int telefone){
 
 }
 
-void insercao (no x, no *raiz){
-	
-	int f = busca(raiz,x.telefone);
+void insercao (no x, no *raiz_arvore){
+
+	int f = busca(raiz_arvore,x.telefone);
 	if(f==1){
 		printf("elemento já existe.");
 	}
@@ -92,19 +92,30 @@ void insercao (no x, no *raiz){
 		no *pt = &x;
 		if(f==0){
 			raiz = pt;
+			raiz_arvore = pt;
 		}
 		else if(f==2){
-			raiz->esq = pt;
+			raiz_arvore->esq = pt;
 		}
 		else{
-			raiz->dir = pt;
-		}		
+			raiz_arvore->dir = pt;
+		}
 
 	}
 
 }
 
-    
+void pre_ordem(no *raiz ){
+     if(raiz !=NULL){
+         visitar(raiz);
+         pre_ordem(raiz->esq);
+         pre_ordem(raiz->dir);
+     }
+	else{
+		printf("raiz é nula.");
+	}
+}
+
 
 void visitar(no *raiz)
 {
@@ -119,16 +130,7 @@ void visitar(no *raiz)
         printf("<><><><><><><><><><><><><><>\n");
 }
 
-void pre_ordem(no *raiz ){
-     if(raiz !=NULL){
-         visitar(raiz);
-         pre_ordem(raiz->esq);
-         pre_ordem(raiz->dir);
-     }
-	else{
-		printf("raiz é nula.");
-	}
-    }
+
 
 
 
@@ -154,14 +156,14 @@ while(1){
 	int telefone;
         scanf("%d",&telefone);
         printf("Nome: ");
-	__fpurge(stdin);
+        fflush(stdin);
 	char nome[20];
         fgets(nome,20,stdin);
         printf("RG: ");
 	int rg;
         scanf("%d",&rg);
         printf("Email: ");
-	__fpurge(stdin);
+        fflush(stdin);
 	char email[20];
         fgets(email,20,stdin);
 	no no_ins;
