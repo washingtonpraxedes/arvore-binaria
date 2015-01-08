@@ -63,7 +63,7 @@ int busca (no *raiz,int telefone){
         }
         else if (raiz->telefone>telefone){
             if(raiz->esq!=NULL){
-                busca(telefone,raiz->esq);
+                busca(raiz->esq,telefone);
             }
             else{
                 return 2;
@@ -71,7 +71,7 @@ int busca (no *raiz,int telefone){
 
         }
          else if(raiz->dir!=NULL){
-            busca(telefone,raiz->dir);
+            busca(raiz->dir,telefone);
             }
 
             else{
@@ -104,17 +104,9 @@ void insercao (no x, no *raiz){
 
 }
 
-    void pre_ordem(no *raiz ){
-     if(raiz !=NULL){
-         visitar(raiz);
-         pre_ordem(raiz->esq);
-         pre_ordem(raiz->dir);
-     }
+    
 
-
-    }
-
-	void visitar(no *raiz)
+void visitar(no *raiz)
 {
 	if(raiz == NULL){
     	return;
@@ -127,7 +119,15 @@ void insercao (no x, no *raiz){
         printf("<><><><><><><><><><><><><><>\n");
 }
 
+void pre_ordem(no *raiz ){
+     if(raiz !=NULL){
+         visitar(raiz);
+         pre_ordem(raiz->esq);
+         pre_ordem(raiz->dir);
+     }
 
+
+    }
 
 
 
@@ -148,8 +148,8 @@ while(1){
     scanf("%d",&opt);
 
     switch(opt){
-    case 1:
-	no no_ins;
+    case 1: ;
+	no no_ins= NULL;
         printf("Novo numero: ");
         scanf("%d",&no_ins.telefone);
         printf("Nome: ");
@@ -158,11 +158,11 @@ while(1){
         scanf("%d",&no_ins.rg);
         printf("Email: ");
         fgets(no_ins.email,20,stdin);
-        inserir(no_ins,raiz);
+        insercao(no_ins,raiz);
         break;
     case 2:
         printf("Digite o numero de pesquisa: ");
-
+	int telefone;
         scanf("%d",&telefone);
 
 
@@ -178,7 +178,7 @@ while(1){
         switch(op){
             case 1:
                 printf("Listando em Pre-ordem:\n");
-                pre_ordem(&raiz);
+                pre_ordem(raiz);
                 break;
         }
 
@@ -192,3 +192,5 @@ while(1){
 	return 0;
 
 }
+
+
