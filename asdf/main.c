@@ -52,16 +52,17 @@ void inserirNo(no **raiz,int telefoneM, int rgM, char *nomeM, char *emailM)
         printf("Telefone %d ja existe na arvore.\n",telefoneM);
 
 	}
-    int busca (no *raiz,int telefone){
+    
+int busca (no *raiz,int telefone){
 
         if(raiz==NULL){
             return 0;
         }
-         if else (raiz->telefone==telefone){
+        else if (raiz->telefone==telefone){
             return 1;
         }
-         if else (raiz->telefone>telefone){
-            se(raiz->esq!=NULL){
+        else if (raiz->telefone>telefone){
+            if(raiz->esq!=NULL){
                 busca(telefone,raiz->esq);
             }
             else{
@@ -69,7 +70,7 @@ void inserirNo(no **raiz,int telefoneM, int rgM, char *nomeM, char *emailM)
             }
 
         }
-         if else(raiz->dir!=NULL){
+         else if(raiz->dir!=NULL){
             busca(telefone,raiz->dir);
             }
 
@@ -79,7 +80,27 @@ void inserirNo(no **raiz,int telefoneM, int rgM, char *nomeM, char *emailM)
             }
 
 
+}
 
+void insercao (no x, no *raiz){
+	
+	int f = busca(raiz,x.telefone);
+	if(f==1){
+		printf("elemento já existe.");
+	}
+	else{
+		no *pt = &x;
+		if(f==0){
+			raiz = pt;
+		}
+		else if(f==2){
+			raiz->esq = pt;
+		}
+		else{
+			raiz->dir = pt;
+		}		
+
+	}
 
 }
 
@@ -128,19 +149,16 @@ while(1){
 
     switch(opt){
     case 1:
+	no no_ins;
         printf("Novo numero: ");
-        int telefone;
-        scanf("%d",&telefone);
+        scanf("%d",&no_ins.telefone);
         printf("Nome: ");
-        char nome[20];
-        scanf("%s",nome);
+        fgets(no_ins.nome,20,stdin);
         printf("RG: ");
-        int rg;
-        scanf("%d",&rg);
+        scanf("%d",&no_ins.rg);
         printf("Email: ");
-        char email[20];
-        scanf("%s",email);
-        inserirNo(&raiz,  telefone, rg,  nome,  email);
+        fgets(no_ins.email,20,stdin);
+        inserir(no_ins,raiz);
         break;
     case 2:
         printf("Digite o numero de pesquisa: ");
@@ -174,4 +192,3 @@ while(1){
 	return 0;
 
 }
-
