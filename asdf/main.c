@@ -125,8 +125,9 @@ void pre_ordem(no *raiz ){
          pre_ordem(raiz->esq);
          pre_ordem(raiz->dir);
      }
-
-
+	else{
+		printf("raiz é nula.");
+	}
     }
 
 
@@ -149,20 +150,28 @@ while(1){
 
     switch(opt){
     case 1: ;
-	no no_ins= NULL;
         printf("Novo numero: ");
-        scanf("%d",&no_ins.telefone);
+	int telefone;
+        scanf("%d",&telefone);
         printf("Nome: ");
-        fgets(no_ins.nome,20,stdin);
+	__fpurge(stdin);
+	char nome[20];
+        fgets(nome,20,stdin);
         printf("RG: ");
-        scanf("%d",&no_ins.rg);
+	int rg;
+        scanf("%d",&rg);
         printf("Email: ");
-        fgets(no_ins.email,20,stdin);
+	__fpurge(stdin);
+	char email[20];
+        fgets(email,20,stdin);
+	no no_ins;
+	no_ins.telefone = telefone; no_ins.nome = nome; no_ins.rg = rg;
+	no_ins.email = email;
         insercao(no_ins,raiz);
         break;
     case 2:
         printf("Digite o numero de pesquisa: ");
-	int telefone;
+	int telefone2;
         scanf("%d",&telefone);
 
 
