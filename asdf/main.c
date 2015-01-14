@@ -4,135 +4,94 @@
 #include <string.h>
 
 typedef struct no{
-	struct no *esq;
-	struct no *dir;
-    struct no *pai;
-	int telefone,rg;
-    char *nome;
-    char *email;
-
+struct no *esq;
+struct no *dir;
+struct no *pai;
+int telefone,rg;
+char *nome;
+char *email;
 }no;
-/*lembrar*/
 
-no *raiz = NULL;
+no *raiz; /*raiz da árvore*/
 
-
-void inserirNo(no **raiz,int telefoneM, int rgM, char *nomeM, char *emailM)
-{
-	if(*raiz == NULL) {
-        printf("Entro no if 1 \n");
-    	no *aux = (no *)malloc(sizeof(no));
-    	aux->telefone = telefoneM;
-    	aux->rg = rgM;
-    	aux-> nome=nomeM;
-    	aux-> email= emailM;
-    	aux->dir = aux->esq = NULL;
-    	*raiz = aux;
-    	printf("Elemento foi inserido com sucesso.\n");
-
-    	printf("Raiz\n");
-    	printf("%d\n",aux->telefone);
-    	printf("%d\n",aux->rg);
-    	printf("%s\n",aux->nome);
-    	printf("%s\n",aux->email);
-    	return;
+/*função que busca um nó em uma arvore de raiz raiz_arv. Retorna um ponteiro para o nó encontrado ou NULL
+se o nó não existir*/
+no* busca (no* raiz_arv,int chave){
+	if(raiz_arv == NULL){
+		return NULL;
 	}
-	if  (telefoneM<(*raiz)->telefone) {
-        printf("Entrou no 2 if");
-    	inserirNo(&(*raiz)->esq,telefoneM, rgM,  nomeM,  emailM);
-    	return;
+	else {
+        if((raiz_arv->telefone)>chave){
+		return busca(raiz_arv->esq,chave);
 	}
-
-
-        if( telefoneM>(*raiz)->telefone) {
-            printf("Entrou no 3 if");
-            inserirNo(&(*raiz)->dir,telefoneM, rgM,  nomeM,  emailM);
-            return;
-        }
-        printf("Telefone %d ja existe na arvore.\n",telefoneM);
-
-	}
-
-int busca (no *raiz,int telefone){
-
-        if(raiz==NULL){
-            return 0;
-        }
-        else if (raiz->telefone==telefone){
-            return 1;
-        }
-        else if (raiz->telefone>telefone){
-            if(raiz->esq!=NULL){
-                busca(raiz->esq,telefone);
-            }
-            else{
-                return 2;
-            }
-
-        }
-         else if(raiz->dir!=NULL){
-            busca(raiz->dir,telefone);
-            }
-
-            else{
-
-                return 3;
-            }
-
-
-}
-
-void insercao (no x, no *raiz_arvore){
-
-	int f = busca(raiz_arvore,x.telefone);
-	if(f==1){
-		printf("elemento já existe.");
+	else if((raiz_arv->telefone)<chave){
+		return busca(raiz_arv->dir,chave);
 	}
 	else{
-		no *pt = &x;
-		if(f==0){
-			raiz = pt;
-			raiz_arvore = pt;
+        return raiz_arv;
+	}
+	}
+
+
+}
+
+/*função que tem como parâmetro os dados de um nó e o insere na arvore com raiz raiz_arv. O retorno é um ponteiro
+para a raiz atualizada*/
+no* insercao (int telefone,int rg,char *nome,char *email,no* raiz_arv){
+
+	if(busca(raiz_arv,telefone)!=NULL){
+		printf("elemento já existe.");
+		return raiz_arv;
+	}
+	else{
+		if(raiz_arv==NULL){
+			raiz_arv = (no*)malloc(sizeof(no));
+			raiz_arv->telefone = telefone; raiz_arv->rg = rg; raiz_arv->nome = nome;
+			raiz_arv->email = email;
+			raiz_arv->esq = raiz_arv->dir = NULL;
 		}
-		else if(f==2){
-			raiz_arvore->esq = pt;
+		else if(raiz_arv->telefone>telefone){
+			raiz_arv->esq = insercao(telefone,rg,nome,email,raiz_arv->esq);
+			/*(raiz_arv->esq)->pai = raiz_arv;*/
 		}
 		else{
-			raiz_arvore->dir = pt;
+			raiz_arv->dir = insercao(telefone,rg,nome,email,raiz_arv->dir);
+			/*(raiz_arv->dir)->pai = raiz_arv;*/
 		}
+		return raiz_arv;
 
 	}
 
 }
 
-void pre_ordem(no *raiz ){
+    void visitar(no *raiz)
+{
+if(raiz == NULL){
+return;
+}
+printf("Telefone :%d\n",raiz->telefone);
+printf("Nome: %s\n",raiz->nome);
+printf("RG: %d\n",raiz->rg);
+printf("Email: %s\n",raiz->email);
+printf("<><><><><><><><><><><><><><>\n");
+}
+
+    void pre_ordem(no *raiz ){
      if(raiz !=NULL){
          visitar(raiz);
          pre_ordem(raiz->esq);
          pre_ordem(raiz->dir);
      }
-	else{
-		printf("raiz é nula.");
-	}
-}
 
 
-void visitar(no *raiz)
-{
-	if(raiz == NULL){
-    	return;
     }
 
-        printf("Telefone :%d\n",raiz->telefone);
-        printf("Nome: %s\n",raiz->nome);
-        printf("RG: %d\n",raiz->rg);
-        printf("Email: %s\n",raiz->email);
-        printf("<><><><><><><><><><><><><><>\n");
-}
 
 
 
 
+/*Estou com problemas em captar uma string. Por isso, o nome e o email se repete em todos os nós, mas a prova
+que o programa funciona está nos campos telefone e rg.*/
 
 int main()
 {
@@ -148,32 +107,32 @@ while(1){
     printf("\n");
     printf("[4]- Listar Cadastros");
     printf("\n");
+    __fpurge(stdin);
     scanf("%d",&opt);
 
     switch(opt){
     case 1: ;
-        printf("Novo numero: ");
-	int telefone;
-        scanf("%d",&telefone);
-        printf("Nome: ");
-        fflush(stdin);
-	char nome[20];
-        fgets(nome,20,stdin);
-        printf("RG: ");
-	int rg;
-        scanf("%d",&rg);
-        printf("Email: ");
-        fflush(stdin);
-	char email[20];
-        fgets(email,20,stdin);
-	no no_ins;
-	no_ins.telefone = telefone; no_ins.nome = nome; no_ins.rg = rg;
-	no_ins.email = email;
-        insercao(no_ins,raiz);
-        break;
+    int telefone,rg;
+    char *nome,*email;
+    printf("Novo telefone: ");
+    __fpurge(stdin);
+	scanf("%d",&telefone);
+	printf("\nNome: ");
+	__fpurge(stdin);
+	scanf("%s",nome);
+	printf("\nRG: ");
+	__fpurge(stdin);
+	scanf("%d",&rg);
+	printf("\nEmail: ");
+	__fpurge(stdin);
+	scanf("%s",email);
+
+
+    raiz= insercao(telefone,rg,nome,email,raiz);
+    break;
+
     case 2:
         printf("Digite o numero de pesquisa: ");
-	int telefone2;
         scanf("%d",&telefone);
 
 
@@ -188,7 +147,7 @@ while(1){
         scanf("%d",&op);
         switch(op){
             case 1:
-                printf("Listando em Pre-ordem:\n");
+                printf("Listando em Pre-ordem:\n<><><><><><><><><><><><><><>\n");
                 pre_ordem(raiz);
                 break;
         }
@@ -203,5 +162,4 @@ while(1){
 	return 0;
 
 }
-
 
